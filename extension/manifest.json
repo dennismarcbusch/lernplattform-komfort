@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Lernplattform Komfort (inoffiziell)",
   "short_name": "LP Komfort",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Inoffizielle Darstellungsanpassungen für die ByCS-Lernplattform: breitere Inhalte, kompakte Kopfzeile, dichtere Kursübersicht.",
   "icons": {
     "16": "icons/icon-16.png",

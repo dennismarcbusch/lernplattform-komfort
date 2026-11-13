@@ -53,7 +53,7 @@ jobs:
           gh release delete latest --yes || true
           git tag -f latest
           git push -f origin latest
-          gh release create latest "${{ steps.zip.outputs.file }}" \
+          gh release create latest "${{ steps.zip.outputs.file }}" dist/lernplattform-komfort.zip \
             --prerelease \
             --title "Aktueller Stand (main)" \
             --notes "Automatisch gebaut aus dem letzten Commit auf main (${GITHUB_SHA::7}). Für feste Versionen siehe die Releases mit Versionsnummer."
@@ -68,7 +68,7 @@ jobs:
           if gh release view "v$VERSION" > /dev/null 2>&1; then
             echo "Release v$VERSION gibt es schon, nichts zu tun."
           else
-            gh release create "v$VERSION" "${{ steps.zip.outputs.file }}" \
+            gh release create "v$VERSION" "${{ steps.zip.outputs.file }}" dist/lernplattform-komfort.zip \
               --target "$GITHUB_SHA" \
               --title "Lernplattform Komfort v$VERSION" \
               --generate-notes
