@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Lernplattform Komfort (inoffiziell)",
+  "short_name": "LP Komfort",
+  "version": "0.2.0",
+  "description": "Inoffizielle Darstellungsanpassungen für die ByCS-Lernplattform: breitere Inhalte, kompakte Kopfzeile, dichtere Kursübersicht.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "Lernplattform Komfort",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["https://lernplattform.bycs.de/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://lernplattform.bycs.de/*"],
+      "css": ["content/content.css"],
+      "js": ["content/content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "lp-komfort@bs-lif.schule",
+      "strict_min_version": "128.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
+}

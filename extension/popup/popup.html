@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Lernplattform Komfort</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon-48.png" alt="" width="28" height="28">
+    <div>
+      <h1>Lernplattform Komfort</h1>
+      <p class="sub">Inoffizielle Darstellung für lernplattform.bycs.de</p>
+    </div>
+    <label class="switch" title="Alle Anpassungen ein/aus">
+      <input type="checkbox" id="enabled">
+      <span class="slider"></span>
+    </label>
+  </header>
+
+  <main id="options">
+    <section>
+      <h2>Inhaltsbreite</h2>
+      <div class="segmented" role="radiogroup" aria-label="Inhaltsbreite">
+        <label><input type="radio" name="width" value="default"><span>Standard</span></label>
+        <label><input type="radio" name="width" value="wide"><span>Breit</span></label>
+        <label><input type="radio" name="width" value="full"><span>Voll</span></label>
+      </div>
+      <label class="row">
+        <input type="checkbox" id="readable">
+        <span>Textseiten und Bücher lesbar schmal halten</span>
+      </label>
+    </section>
+
+    <section>
+      <h2>Kopfzeile</h2>
+      <label class="row">
+        <input type="checkbox" id="compactHeader">
+        <span>Kompakte Kopfzeile</span>
+      </label>
+      <label class="row">
+        <input type="checkbox" id="hideA11y">
+        <span>Leiste mit Schriftgröße, Kontrast und Dark Mode ausblenden</span>
+      </label>
+    </section>
+
+    <section>
+      <h2>Einstellungsseiten</h2>
+      <label class="row">
+        <input type="checkbox" id="compactForms">
+        <span>Kompakte Formulare (kleinere Felder und Überschriften)</span>
+      </label>
+      <label class="row">
+        <input type="checkbox" id="formColumns">
+        <span>Beschriftung links neben dem Feld</span>
+      </label>
+    </section>
+
+    <section>
+      <h2>Inhalte</h2>
+      <label class="row">
+        <input type="checkbox" id="denseCards">
+        <span>Kursübersicht als dichtes Raster</span>
+      </label>
+      <label class="row">
+        <input type="checkbox" id="compactCourse">
+        <span>Kompakte Kursseiten</span>
+      </label>
+      <label class="row">
+        <input type="checkbox" id="polish">
+        <span>Moderner Feinschliff (Ecken, Schatten, Hover)</span>
+      </label>
+      <label class="row">
+        <input type="checkbox" id="sysFont">
+        <span>Systemschrift statt Atkinson Hyperlegible</span>
+      </label>
+    </section>
+  </main>
+
+  <footer>
+    <button type="button" id="reset">Zurücksetzen</button>
+    <span class="hint">Änderungen wirken sofort.</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

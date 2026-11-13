@@ -1,0 +1,312 @@
+/*
+ * Lernplattform Komfort (inoffiziell)
+ * Darstellungsanpassungen für lernplattform.bycs.de (Moodle, Theme "mebis").
+ * Jede Regel hängt an einem data-lpk-*-Attribut auf <html>, das content.js
+ * je nach Einstellung setzt. Ohne Attribut bleibt die Plattform unverändert.
+ * Farben kommen aus den Theme-Variablen (--color-*), damit Dark Mode und
+ * Kontrastmodus der Plattform weiter funktionieren.
+ */
+
+/* ---------- Variablen ---------- */
+html[data-lpk-on] {
+  --lpk-maxw: 1000px;
+  --lpk-read-maxw: 1150px;
+  --lpk-radius: 12px;
+  --lpk-radius-sm: 8px;
+  --lpk-line: color-mix(in srgb, currentColor 12%, transparent);
+  --lpk-hover: color-mix(in srgb, currentColor 5%, transparent);
+  --lpk-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 2px 10px rgba(16, 24, 40, .06);
+  --lpk-shadow-hover: 0 6px 20px rgba(16, 24, 40, .14);
+}
+html[data-lpk-on].dark {
+  --lpk-shadow: 0 1px 2px rgba(0, 0, 0, .45), 0 2px 10px rgba(0, 0, 0, .35);
+  --lpk-shadow-hover: 0 6px 20px rgba(0, 0, 0, .55);
+}
+html[data-lpk-width="wide"] { --lpk-maxw: 1440px; }
+html[data-lpk-width="full"] { --lpk-maxw: 100%; }
+
+/* ---------- 1. Inhaltsbreite ---------- */
+@media (min-width: 768px) {
+  html[data-lpk-width="wide"] body.limitedwidth #page.drawers .main-inner,
+  html[data-lpk-width="full"] body.limitedwidth #page.drawers .main-inner,
+  html[data-lpk-width="wide"] .pagelayout-standard #page.drawers .main-inner,
+  html[data-lpk-width="full"] .pagelayout-standard #page.drawers .main-inner {
+    max-width: var(--lpk-maxw) !important;
+    /* seitlich Platz lassen für die Schalter von Kursindex und Blockleiste */
+    width: calc(100% - 6rem) !important;
+  }
+  html[data-lpk-width="wide"] .header-maxwidth,
+  html[data-lpk-width="full"] .header-maxwidth {
+    max-width: var(--lpk-maxw) !important;
+  }
+  html[data-lpk-width="wide"] .secondary-navigation .navigation .nav-tabs,
+  html[data-lpk-width="full"] .secondary-navigation .navigation .nav-tabs {
+    max-width: var(--lpk-maxw) !important;
+  }
+  html[data-lpk-width="wide"] body.limitedwidth .footerblock,
+  html[data-lpk-width="full"] body.limitedwidth .footerblock,
+  html[data-lpk-width="wide"] body.limitedwidth #page.drawers .footer-popover,
+  html[data-lpk-width="full"] body.limitedwidth #page.drawers .footer-popover,
+  html[data-lpk-width="wide"] body.limitedwidth.uses-drawers .stickyfooter .sticky-footer-content,
+  html[data-lpk-width="full"] body.limitedwidth.uses-drawers .stickyfooter .sticky-footer-content {
+    max-width: var(--lpk-maxw) !important;
+  }
+
+  /* Reine Textseiten (Textseite, Buch) bleiben lesbar schmal */
+  html[data-lpk-readable][data-lpk-width="wide"] body.path-mod-page:not(.pagelayout-admin) #page.drawers .main-inner,
+  html[data-lpk-readable][data-lpk-width="full"] body.path-mod-page:not(.pagelayout-admin) #page.drawers .main-inner,
+  html[data-lpk-readable][data-lpk-width="wide"] body.path-mod-book:not(.pagelayout-admin) #page.drawers .main-inner,
+  html[data-lpk-readable][data-lpk-width="full"] body.path-mod-book:not(.pagelayout-admin) #page.drawers .main-inner,
+  html[data-lpk-readable][data-lpk-width="wide"] body.path-mod-page:not(.pagelayout-admin) .header-maxwidth,
+  html[data-lpk-readable][data-lpk-width="full"] body.path-mod-page:not(.pagelayout-admin) .header-maxwidth,
+  html[data-lpk-readable][data-lpk-width="wide"] body.path-mod-book:not(.pagelayout-admin) .header-maxwidth,
+  html[data-lpk-readable][data-lpk-width="full"] body.path-mod-book:not(.pagelayout-admin) .header-maxwidth {
+    max-width: min(var(--lpk-maxw), var(--lpk-read-maxw)) !important;
+  }
+}
+
+/* ---------- 2. Kompakte Kopfzeile (nur Desktop/Laptop) ---------- */
+@media (min-width: 1024px) {
+  html[data-lpk-compact-header] {
+    --bycs-topbar-height: calc(3.5rem + 2.375rem) !important;
+    --bycs-header-height: 3.5rem !important;
+  }
+  html[data-lpk-compact-header] bycs-topbar {
+    --desktop-header-height: 3.5rem;
+  }
+  html[data-lpk-hide-a11y] {
+    --bycs-topbar-height: 5rem !important;
+  }
+  html[data-lpk-hide-a11y][data-lpk-compact-header] {
+    --bycs-topbar-height: 3.5rem !important;
+  }
+  /* Das Theme setzt den Abstand unter der Kopfzeile fest auf 7.375rem */
+  html[data-lpk-compact-header] #page.drawers,
+  html[data-lpk-hide-a11y] #page.drawers {
+    padding-top: var(--bycs-topbar-height) !important;
+  }
+  /* Kopfbereich über dem Kurs (Titel, Bild) etwas enger */
+  html[data-lpk-compact-header] #page.drawers .main-inner.mbscontentheader {
+    padding-top: .75rem !important;
+    padding-bottom: .75rem !important;
+  }
+}
+
+/* ---------- 3. Kursübersicht als dichtes Raster ---------- */
+html[data-lpk-dense-cards] .block_myoverview .card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+  margin: 0 !important;
+}
+html[data-lpk-dense-cards] .block_myoverview .card-grid > .col {
+  width: auto !important;
+  max-width: none !important;
+  flex: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+html[data-lpk-dense-cards] .block_myoverview .course-card {
+  margin: 0 !important;
+  width: 100%;
+}
+html[data-lpk-dense-cards] .block_myoverview .course-card .card-img-top {
+  height: 96px !important;
+}
+html[data-lpk-dense-cards] .block_myoverview .course-card .card-body {
+  padding: .6rem .3rem .4rem .8rem !important;
+}
+html[data-lpk-dense-cards] .block_myoverview .course-card .coursename {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+}
+html[data-lpk-dense-cards] .block_myoverview .course-card .card-footer {
+  padding: .25rem .5rem !important;
+}
+
+/* ---------- 4. Kompakte Kursseiten ---------- */
+html[data-lpk-compact-course] .activity-item {
+  padding: .45rem .75rem !important;
+}
+html[data-lpk-compact-course] li.activity {
+  margin-bottom: 2px !important;
+}
+html[data-lpk-compact-course] .activity-item .activity-altcontent,
+html[data-lpk-compact-course] .activity-item .activity-description {
+  font-size: .92em;
+  margin-top: .25rem;
+}
+html[data-lpk-compact-course] body:not(.format-tiles) li.section.course-section {
+  padding-top: 1rem !important;
+  padding-bottom: .5rem !important;
+}
+html[data-lpk-compact-course] .course-section-header {
+  margin-bottom: .25rem;
+}
+html[data-lpk-compact-course] body.format-tiles ul.tiles {
+  gap: .25rem;
+}
+
+/* ---------- 5. Moderner Feinschliff ---------- */
+html[data-lpk-polish] #page.drawers .main-inner {
+  border-radius: var(--lpk-radius) !important;
+  box-shadow: var(--lpk-shadow);
+}
+html[data-lpk-polish] #page.drawers .main-inner.mbscontentheader {
+  box-shadow: none;
+}
+html[data-lpk-polish] .block_myoverview.card {
+  border: 0;
+  background: transparent;
+}
+html[data-lpk-polish] .course-card {
+  border: 1px solid var(--lpk-line) !important;
+  border-radius: var(--lpk-radius) !important;
+  overflow: hidden;
+  box-shadow: var(--lpk-shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+html[data-lpk-polish] .course-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--lpk-shadow-hover);
+}
+html[data-lpk-polish] .course-card .card-img-top {
+  border-radius: 0 !important;
+}
+html[data-lpk-polish] .course-card .card-footer {
+  background: transparent !important;
+}
+html[data-lpk-polish] ul.tiles li.tile {
+  border-radius: var(--lpk-radius) !important;
+  overflow: hidden;
+  box-shadow: var(--lpk-shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+html[data-lpk-polish] ul.tiles li.tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--lpk-shadow-hover);
+}
+html[data-lpk-polish] .activity-item {
+  border-radius: var(--lpk-radius-sm);
+  transition: background-color .12s ease;
+}
+html[data-lpk-polish] .activity-item:hover {
+  background-color: var(--lpk-hover);
+}
+html[data-lpk-polish] .btn {
+  border-radius: var(--lpk-radius-sm);
+}
+html[data-lpk-polish] .form-control,
+html[data-lpk-polish] .form-select,
+html[data-lpk-polish] .custom-select {
+  border-radius: var(--lpk-radius-sm);
+}
+html[data-lpk-polish] .drawer .list-group-item {
+  border-radius: var(--lpk-radius-sm);
+}
+html[data-lpk-polish] .block.card {
+  border-radius: var(--lpk-radius);
+}
+html[data-lpk-polish] {
+  scrollbar-width: thin;
+}
+
+/* ---------- 6. Systemschrift ---------- */
+html[data-lpk-sysfont] body,
+html[data-lpk-sysfont] h1, html[data-lpk-sysfont] h2, html[data-lpk-sysfont] h3,
+html[data-lpk-sysfont] h4, html[data-lpk-sysfont] h5, html[data-lpk-sysfont] h6,
+html[data-lpk-sysfont] .h1, html[data-lpk-sysfont] .h2, html[data-lpk-sysfont] .h3,
+html[data-lpk-sysfont] .h4, html[data-lpk-sysfont] .h5, html[data-lpk-sysfont] .h6,
+html[data-lpk-sysfont] .btn, html[data-lpk-sysfont] input,
+html[data-lpk-sysfont] select, html[data-lpk-sysfont] textarea,
+html[data-lpk-sysfont] .tile h3 {
+  font-family: system-ui, -apple-system, "Segoe UI", Ubuntu, Cantarell, "Noto Sans", Roboto, sans-serif !important;
+}
+
+/* ---------- 7. Kompakte Formulare (Einstellungen von Kurs und Aktivität) ---------- */
+/* Das Theme setzt Felder auf 20px Schrift und ca. 59px Höhe. */
+html[data-lpk-compact-forms] .form-control,
+html[data-lpk-compact-forms] .form-select,
+html[data-lpk-compact-forms] .custom-select {
+  font-size: .9rem !important;
+  line-height: 1.4 !important;
+  padding: .3rem .6rem !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+html[data-lpk-compact-forms] .form-select,
+html[data-lpk-compact-forms] .custom-select {
+  padding-right: 2rem !important;
+  background-position: calc(100% - .6rem) 50%, .6rem 50% !important;
+}
+html[data-lpk-compact-forms] .mform .form-check:not(.form-switch) .form-check-input,
+html[data-lpk-compact-forms] .mform input[type="checkbox"]:not([role="switch"]) {
+  width: 1.1em !important;
+  height: 1.1em !important;
+  margin-top: .2em;
+}
+html[data-lpk-compact-forms] .mform .btn:not(.btn-icon):not(.btn-link),
+html[data-lpk-compact-forms] .stickyfooter .btn:not(.btn-icon):not(.btn-link) {
+  font-size: .95rem !important;
+  padding: .35rem .9rem !important;
+}
+/* Abschnittsüberschriften wie "Allgemeines", "Inhalt" */
+html[data-lpk-compact-forms] .mform fieldset .ftoggler h3,
+html[data-lpk-compact-forms] .mform fieldset > .d-flex > .ftoggler + h3,
+html[data-lpk-compact-forms] .mform fieldset > .d-flex h3 {
+  font-size: 1.2rem !important;
+  line-height: 1.3 !important;
+}
+html[data-lpk-compact-forms] .mform fieldset.collapsible {
+  margin-bottom: .25rem !important;
+}
+html[data-lpk-compact-forms] .mform fieldset > .d-flex.mb-2 {
+  margin-bottom: .25rem !important;
+}
+/* Seitenüberschrift über dem Formular, z. B. "Einstellungen bearbeiten" */
+html[data-lpk-compact-forms] body.pagelayout-admin #region-main > div > h2 {
+  font-size: 1.45rem !important;
+  margin-bottom: .5rem !important;
+}
+html[data-lpk-compact-forms] .mform .fitem {
+  margin-bottom: .6rem !important;
+}
+html[data-lpk-compact-forms] .mform .col-form-label {
+  padding-top: .2rem !important;
+  padding-bottom: .15rem !important;
+  font-size: .95rem;
+}
+html[data-lpk-compact-forms] .form-autocomplete-selection .badge {
+  font-size: .85rem !important;
+  padding: .25rem .6rem !important;
+}
+html[data-lpk-compact-forms] .stickyfooter .sticky-footer-content {
+  padding-top: .3rem !important;
+  padding-bottom: .3rem !important;
+}
+html[data-lpk-compact-forms] .stickyfooter .fitem {
+  margin-bottom: 0 !important;
+}
+
+/* ---------- 8. Formulare zweispaltig: Beschriftung links, Feld rechts ---------- */
+@media (min-width: 1100px) {
+  html[data-lpk-form-columns] #page .mform:not(.full-width-labels) .fitem > .col-md-3 {
+    flex: 0 0 28% !important;
+    max-width: 28% !important;
+    margin: 0 !important;
+    padding-top: .45rem !important;
+  }
+  html[data-lpk-form-columns] #page .mform:not(.full-width-labels) .fitem > .col-md-9 {
+    flex: 0 0 72% !important;
+    max-width: 72% !important;
+    margin: 0 !important;
+  }
+  html[data-lpk-form-columns] #page .mform:not(.full-width-labels) .collapsible-actions {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+}
