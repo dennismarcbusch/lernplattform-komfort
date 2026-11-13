@@ -2,6 +2,7 @@
 
 [![Build](https://github.com/dennismarcbusch/lernplattform-komfort/actions/workflows/build.yml/badge.svg)](https://github.com/dennismarcbusch/lernplattform-komfort/actions/workflows/build.yml)
 [![Version](https://img.shields.io/github/v/release/dennismarcbusch/lernplattform-komfort?label=Version)](https://github.com/dennismarcbusch/lernplattform-komfort/releases/latest)
+[![Lizenz: MIT](https://img.shields.io/badge/Lizenz-MIT-blue)](LICENSE)
 
 Browser-Erweiterung für Chrome, Edge und Firefox, die die
 [ByCS-Lernplattform](https://lernplattform.bycs.de) am PC und Laptop moderner und
@@ -137,3 +138,9 @@ automatisch das Release `v0.3.0` mit dem ZIP an. Pushes ohne neue
 Versionsnummer aktualisieren nur „latest“.
 
 Lokal bauen: `bash scripts/build.sh`
+
+## Lizenz
+
+[MIT-Lizenz](LICENSE), © 2026 Dennis Busch. Der Code darf frei verwendet,
+verändert und weitergegeben werden, auch in anderen Projekten, solange der
+Lizenzhinweis erhalten bleibt.

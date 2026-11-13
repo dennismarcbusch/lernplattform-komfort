@@ -13,9 +13,10 @@ OUT="dist/lernplattform-komfort-${VERSION}.zip"
 rm -rf dist
 mkdir -p dist
 
-# README mit ins Archiv, damit die Installationsanleitung dabei ist
+# README und LICENSE mit ins Archiv
 cp README.md extension/README.md
-trap 'rm -f extension/README.md' EXIT
+cp LICENSE extension/LICENSE
+trap 'rm -f extension/README.md extension/LICENSE' EXIT
 
 # -X: keine Zusatzattribute, Dateien sortiert für reproduzierbare Archive
 (cd extension && find . -type f ! -name '.*' | LC_ALL=C sort | zip -q -X -@ "../${OUT}")
