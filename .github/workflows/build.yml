@@ -3,7 +3,6 @@ name: Build
 on:
   push:
     branches: [main]
-    tags: ["v*"]
   pull_request:
   workflow_dispatch:
 
@@ -33,19 +32,11 @@ jobs:
       - name: Mit web-ext prüfen (Firefox-Kompatibilität)
         run: npx --yes web-ext@8 lint --source-dir extension --self-hosted
 
-      - name: Version aus Tag mit manifest.json abgleichen
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          MANIFEST=$(python3 -c 'import json; print(json.load(open("extension/manifest.json"))["version"])')
-          TAG="${GITHUB_REF_NAME#v}"
-          if [ "$MANIFEST" != "$TAG" ]; then
-            echo "::error::Tag v$TAG passt nicht zur Version $MANIFEST in extension/manifest.json"
-            exit 1
-          fi
-
       - name: ZIP bauen
         id: zip
-        run: echo "file=$(bash scripts/build.sh)" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "file=$(bash scripts/build.sh)" >> "$GITHUB_OUTPUT"
+          echo "version=$(python3 -c 'import json; print(json.load(open("extension/manifest.json"))["version"])')" >> "$GITHUB_OUTPUT"
 
       - name: ZIP als Build-Artefakt hochladen
         uses: actions/upload-artifact@v7
@@ -67,12 +58,18 @@ jobs:
             --title "Aktueller Stand (main)" \
             --notes "Automatisch gebaut aus dem letzten Commit auf main (${GITHUB_SHA::7}). Für feste Versionen siehe die Releases mit Versionsnummer."
 
-      # Bei einem Versions-Tag wie v0.2.0: richtiges Release mit ZIP
-      - name: Release für Versions-Tag erstellen
-        if: startsWith(github.ref, 'refs/tags/v')
+      # Neue Versionsnummer in manifest.json: festes Release v<version> anlegen
+      - name: Release für neue Version erstellen
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.zip.outputs.version }}
         run: |
-          gh release create "$GITHUB_REF_NAME" "${{ steps.zip.outputs.file }}" \
-            --title "Lernplattform Komfort $GITHUB_REF_NAME" \
-            --generate-notes
+          if gh release view "v$VERSION" > /dev/null 2>&1; then
+            echo "Release v$VERSION gibt es schon, nichts zu tun."
+          else
+            gh release create "v$VERSION" "${{ steps.zip.outputs.file }}" \
+              --target "$GITHUB_SHA" \
+              --title "Lernplattform Komfort v$VERSION" \
+              --generate-notes
+          fi

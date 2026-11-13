@@ -101,17 +101,10 @@ Mozillas `web-ext lint` laufen und baut das ZIP (als Build-Artefakt im
 jeweiligen Lauf). Bei Pushes auf `main` wird zusätzlich das Release „latest“
 erneuert.
 
-Für eine neue feste Version:
-
-1. In `extension/manifest.json` die `version` erhöhen, z. B. auf `0.3.0`.
-2. Committen und pushen.
-3. Tag setzen und pushen:
-   ```
-   git tag v0.3.0
-   git push origin v0.3.0
-   ```
-
-Der Workflow bricht ab, wenn Tag und Version im Manifest nicht übereinstimmen.
+Für eine neue feste Version reicht es, in `extension/manifest.json` die
+`version` zu erhöhen (z. B. auf `0.3.0`) und auf `main` zu pushen. Der Workflow
+merkt, dass es noch kein Release `v0.3.0` gibt, und legt es mit dem ZIP an.
+Pushes ohne neue Versionsnummer aktualisieren nur „latest“.
 
 Lokal bauen: `bash scripts/build.sh`
 
